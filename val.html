@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>💖 Valentine Surprise 💖</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: radial-gradient(circle, #ffe0ec, #ff8fab);
+        font-family: 'Segoe UI', sans-serif;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        background: white;
+        border-radius: 30px;
+        padding: 35px;
+        width: 90%;
+        max-width: 520px;
+        text-align: center;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 5;
+        animation: popIn 1s ease;
+    }
+
+    @keyframes popIn {
+        from { transform: scale(0.7); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+        color: #ff477e;
+        margin-bottom: 10px;
+    }
+
+    .heart {
+        font-size: 70px;
+        animation: beat 1s infinite;
+    }
+
+    @keyframes beat {
+        0% { transform: scale(1); }
+        40% { transform: scale(1.4); }
+        70% { transform: scale(1); }
+    }
+
+    #text {
+        min-height: 90px;
+        font-size: 18px;
+        color: #555;
+        line-height: 1.8;
+        margin-top: 15px;
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 14px 30px;
+        font-size: 18px;
+        border-radius: 40px;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .next {
+        background: linear-gradient(135deg, #ff4d6d, #ff758f);
+        color: white;
+        box-shadow: 0 10px 20px rgba(255,77,109,0.4);
+    }
+
+    .next:hover {
+        transform: scale(1.1);
+    }
+
+    .run {
+        background: #ccc;
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+    }
+
+    .final {
+        display: none;
+        font-size: 22px;
+        color: #ff477e;
+        font-weight: bold;
+        margin-top: 25px;
+        animation: popIn 1s ease;
+    }
+
+    .heart-float {
+        position: absolute;
+        font-size: 22px;
+        animation: float 6s linear infinite;
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0); opacity: 0.9; }
+        100% { transform: translateY(-100vh); opacity: 0; }
+    }
+
+    .boom {
+        position: absolute;
+        font-size: 40px;
+        animation: boom 1s ease-out forwards;
+        pointer-events: none;
+    }
+
+    @keyframes boom {
+        0% { transform: scale(0.3); opacity: 1; }
+        100% { transform: scale(2); opacity: 0; }
+    }
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2022/02/23/audio_3b7b8f36c6.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+    <div class="heart">💖</div>
+    <h1>Happy Valentine’s Day</h1>
+
+    <div id="text"></div>
+
+    <button class="next" onclick="next()">ไปต่อเลย 💕</button>
+    <button class="run" onmouseover="runAway(this)">ไม่เอาอะ 😝</button>
+
+    <div id="final" class="final">
+        เค้าไม่ได้อยากได้อะไรเลยในวันนี้…  
+        นอกจากเธอ 💍💞  
+        เป็นวาเลนไทน์ของเค้าตลอดไปนะ
+    </div>
+</div>
+
+<script>
+    const messages = [
+        "วันนี้เค้าจะไม่พูดอะไรยาวเลยนะ…",
+        "แค่อยากให้เธอรู้ว่า 💗",
+        "ทุกวันที่มีเธอ เค้ามีความสุขมากจริงๆ",
+        "ขอบคุณที่ยังจับมือเค้าไว้ 🤍",
+        "และขอใช้วันนี้บอกว่า..."
+    ];
+
+    let index = 0;
+    const textEl = document.getElementById("text");
+    const finalEl = document.getElementById("final");
+
+    function typeText(msg, i = 0) {
+        if (i === 0) textEl.innerHTML = "";
+        if (i < msg.length) {
+            textEl.innerHTML += msg.charAt(i);
+            setTimeout(() => typeText(msg, i + 1), 40);
+        }
+    }
+
+    function next() {
+        boom();
+        if (index < messages.length) {
+            typeText(messages[index]);
+            index++;
+        } else {
+            textEl.style.display = "none";
+            finalEl.style.display = "block";
+            massiveBoom();
+        }
+    }
+
+    function runAway(btn) {
+        btn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+        btn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    }
+
+    function boom() {
+        const b = document.createElement("div");
+        b.className = "boom";
+        b.innerHTML = "💥💖";
+        b.style.left = Math.random() * 100 + "vw";
+        b.style.top = Math.random() * 100 + "vh";
+        document.body.appendChild(b);
+        setTimeout(() => b.remove(), 1000);
+    }
+
+    function massiveBoom() {
+        for (let i = 0; i < 15; i++) {
+            setTimeout(boom, i * 150);
+        }
+    }
+
+    setInterval(() => {
+        const h = document.createElement("div");
+        h.className = "heart-float";
+        h.innerHTML = "💗";
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.bottom = "-30px";
+        h.style.fontSize = Math.random() * 20 + 20 + "px";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 6000);
+    }, 300);
+
+    typeText(messages[0]);
+    index++;
+</script>
+
+</body>
+</html>
